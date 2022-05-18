@@ -1,4 +1,4 @@
-import {TouchableWithoutFeedback, View} from 'react-native';
+import {TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -36,15 +36,23 @@ const TakeImageScreen = ({
   secondPhotoHint,
 }: TakeImageScreenProps) => {
   const [checkIconColor, setCheckIconColor] = useState('#fff');
+  const [photos, setPhotos] = useState([]);
+  const [cameraFlash, setCameraFlash] = useState<
+    'off' | 'on' | 'auto' | undefined
+  >('off');
 
   const cameraRef = useRef<Camera>(null);
 
-  const devices = useCameraDevices();
+  const devices = useCameraDevices('wide-angle-camera');
   const device = devices.back;
 
   useEffect(() => {
     requestCameraPermission();
     checkCameraPermission();
+  }, []);
+
+  const handleCameraFlesh = useCallback(() => {
+    setCameraFlash(prevState => (prevState === 'off' ? 'on' : 'off'));
   }, []);
 
   const takePhoto = useCallback(async () => {
@@ -55,6 +63,7 @@ const TakeImageScreen = ({
       const photo = await cameraRef.current.takePhoto({
         qualityPrioritization: 'speed',
         skipMetadata: true,
+        flash: cameraFlash,
       });
       console.log(photo);
     } catch (error) {
@@ -120,12 +129,22 @@ const TakeImageScreen = ({
             Take a picture
           </AppText>
         </View>
-        <View style={styles.footerOverlaySide}>
-          <Icon name="ios-flash-off-outline" size={25} color="#fff" />
+        <TouchableOpacity
+          style={styles.footerOverlaySide}
+          onPress={handleCameraFlesh}>
+          <Icon
+            name={
+              cameraFlash === 'off'
+                ? 'ios-flash-off-outline'
+                : 'ios-flash-outline'
+            }
+            size={25}
+            color="#fff"
+          />
           <AppText fontColor="#fbfbfb" fontSize={13}>
             Flash
           </AppText>
-        </View>
+        </TouchableOpacity>
       </View>
     </AppSafeAreaView>
   );

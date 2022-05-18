@@ -1,5 +1,6 @@
 import {View, ViewStyle, SafeAreaView} from 'react-native';
 import React, {ReactNode} from 'react';
+
 import styles from './styles';
 
 type AppSafeAreaViewProps = {
