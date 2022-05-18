@@ -1,5 +1,7 @@
 import {Dimensions, StyleSheet} from 'react-native';
 
+import {COLORS} from 'constants/colors';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').width;
 
@@ -7,7 +9,7 @@ const windowHeight = Dimensions.get('window').width;
 
 export default StyleSheet.create({
   headerOverlay: {
-    backgroundColor: '#2b2d30',
+    backgroundColor: COLORS.primaryDark,
     justifyContent: 'space-around',
     height: windowHeight / 3,
     left: 0,
@@ -37,7 +39,7 @@ export default StyleSheet.create({
   },
   footerOverlay: {
     alignItems: 'flex-end',
-    backgroundColor: '#2b2d30',
+    backgroundColor: COLORS.primaryDark,
     bottom: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -57,7 +59,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   shutter: {
-    backgroundColor: '#02bdde',
+    backgroundColor: COLORS.primaryBlue,
     borderRadius: windowWidth / 10,
     borderWidth: 10,
     borderColor: '#fff',

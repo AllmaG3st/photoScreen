@@ -1,6 +1,7 @@
 import {Text, TextStyle, TextProps} from 'react-native';
 import React, {ReactNode} from 'react';
 
+import {COLORS} from 'constants/colors';
 import styles from './styles';
 
 type AppTextProps = {
@@ -13,7 +14,7 @@ type AppTextProps = {
 
 const AppText = ({
   children,
-  fontColor = '#000',
+  fontColor = COLORS.black,
   fontSize = 16,
   style,
   props,

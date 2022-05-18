@@ -7,6 +7,7 @@ import AppSafeAreaView from 'components/AppSafeAreaView';
 import AppText from 'components/AppText';
 import AppIcon from 'components/AppIcon';
 
+import {COLORS} from 'constants/colors';
 import styles from './styles';
 
 // Permissions
@@ -35,7 +36,7 @@ const TakeImageScreen = ({
   firstPhotoHint,
   secondPhotoHint,
 }: TakeImageScreenProps) => {
-  const [checkIconColor, setCheckIconColor] = useState('#fff');
+  const [checkIconColor, setCheckIconColor] = useState(COLORS.white);
   const [photos, setPhotos] = useState([]);
   const [cameraFlash, setCameraFlash] = useState<
     'off' | 'on' | 'auto' | undefined
@@ -91,12 +92,12 @@ const TakeImageScreen = ({
       <View style={styles.headerOverlay}>
         <View style={styles.headerOverlayTop}>
           <View style={styles.headerOverlayTopLeft}>
-            <AppText fontColor="#fbfbfb" fontSize={15}>
+            <AppText fontColor={COLORS.appWhite} fontSize={15}>
               {firstPhotoHint}
             </AppText>
           </View>
           <View style={styles.headerOverlayTopRight}>
-            <AppIcon name="close" size={30} iconColor="#fbfbfb" />
+            <AppIcon name="close" size={30} iconColor={COLORS.appWhite} />
           </View>
         </View>
 
@@ -116,7 +117,7 @@ const TakeImageScreen = ({
 
       <View style={styles.footerOverlay}>
         <View style={styles.footerOverlaySide}>
-          <AppIcon name="upload" size={25} iconColor="#fff" />
+          <AppIcon name="upload" size={25} iconColor={COLORS.white} />
           <AppText fontColor="#fbfbfb" fontSize={13}>
             Upload
           </AppText>
@@ -125,7 +126,7 @@ const TakeImageScreen = ({
           <TouchableWithoutFeedback onPress={takePhoto}>
             <View style={styles.shutter} />
           </TouchableWithoutFeedback>
-          <AppText fontColor="#fbfbfb" fontSize={13}>
+          <AppText fontColor={COLORS.appWhite} fontSize={13}>
             Take a picture
           </AppText>
         </View>
@@ -141,7 +142,7 @@ const TakeImageScreen = ({
             size={25}
             color="#fff"
           />
-          <AppText fontColor="#fbfbfb" fontSize={13}>
+          <AppText fontColor={COLORS.appWhite} fontSize={13}>
             Flash
           </AppText>
         </TouchableOpacity>
