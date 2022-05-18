@@ -1,31 +1,20 @@
-import {TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Camera, useCameraDevices} from 'react-native-vision-camera';
+import {
+  Alert,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import React, {useCallback, useRef, useState} from 'react';
+import {Camera} from 'react-native-vision-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import AppSafeAreaView from 'components/AppSafeAreaView';
 import AppText from 'components/AppText';
 import AppIcon from 'components/AppIcon';
+import {useCamera} from 'hooks/useCamera';
 
 import {COLORS} from 'constants/colors';
 import styles from './styles';
-
-// Permissions
-
-const requestCameraPermission = async () => {
-  await Camera.requestCameraPermission();
-};
-
-const checkCameraPermission = async () => {
-  const cameraPermission = await Camera.getCameraPermissionStatus();
-  if (cameraPermission === 'denied' || cameraPermission === 'restricted')
-    //TODO add modal for restricted permission
-    return (
-      <View>
-        <AppText>Permission Restricted</AppText>
-      </View>
-    );
-};
 
 type TakeImageScreenProps = {
   firstPhotoHint: string;
@@ -44,13 +33,9 @@ const TakeImageScreen = ({
 
   const cameraRef = useRef<Camera>(null);
 
-  const devices = useCameraDevices('wide-angle-camera');
-  const device = devices.back;
+  const {cameraPermission, devices} = useCamera();
 
-  useEffect(() => {
-    requestCameraPermission();
-    checkCameraPermission();
-  }, []);
+  const device = devices.back;
 
   const handleCameraFlesh = useCallback(() => {
     setCameraFlash(prevState => (prevState === 'off' ? 'on' : 'off'));
@@ -73,21 +58,21 @@ const TakeImageScreen = ({
   }, []);
 
   if (device == null)
-    return (
-      <View>
-        <AppText>Loading...</AppText>
-      </View>
-    );
+    return <View style={{flex: 1, backgroundColor: COLORS.black}} />;
 
   return (
     <AppSafeAreaView style={{position: 'relative'}}>
-      <Camera
-        ref={cameraRef}
-        style={{flex: 1, zIndex: 1}}
-        device={device}
-        isActive={true}
-        photo={true}
-      />
+      {cameraPermission === 'authorized' ? (
+        <Camera
+          ref={cameraRef}
+          style={{flex: 1, zIndex: 1}}
+          device={device}
+          isActive={true}
+          photo={true}
+        />
+      ) : (
+        Alert.alert('Application needs access to camera')
+      )}
 
       <View style={styles.headerOverlay}>
         <View style={styles.headerOverlayTop}>
