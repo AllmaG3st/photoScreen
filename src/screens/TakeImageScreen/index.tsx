@@ -1,11 +1,12 @@
 import {
   Alert,
+  Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import React, {useCallback, useRef, useState} from 'react';
-import {Camera} from 'react-native-vision-camera';
+import {Camera, PhotoFile} from 'react-native-vision-camera';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import AppSafeAreaView from 'components/AppSafeAreaView';
@@ -19,14 +20,24 @@ import styles from './styles';
 type TakeImageScreenProps = {
   firstPhotoHint: string;
   secondPhotoHint: string;
+  successText: string;
+};
+
+type PhotosStateType = {
+  front: PhotoFile | null;
+  back: PhotoFile | null;
 };
 
 const TakeImageScreen = ({
   firstPhotoHint,
   secondPhotoHint,
+  successText,
 }: TakeImageScreenProps) => {
   const [checkIconColor, setCheckIconColor] = useState(COLORS.white);
-  const [photos, setPhotos] = useState([]);
+  const [photosPreview, setPhotosPreview] = useState<PhotosStateType>({
+    front: null,
+    back: null,
+  });
   const [cameraFlash, setCameraFlash] = useState<
     'off' | 'on' | 'auto' | undefined
   >('off');
@@ -51,11 +62,18 @@ const TakeImageScreen = ({
         skipMetadata: true,
         flash: cameraFlash,
       });
-      console.log(photo);
+      setPhotosPreview(prevState => {
+        return {
+          ...prevState,
+          front: photo,
+        };
+      });
     } catch (error) {
       console.log(error);
     }
   }, []);
+
+  console.log(photosPreview.front);
 
   if (device == null)
     return <View style={{flex: 1, backgroundColor: COLORS.black}} />;
@@ -74,6 +92,24 @@ const TakeImageScreen = ({
         Alert.alert('Application needs access to camera')
       )}
 
+      <View style={styles.photosPreview}>
+        <View style={styles.successTextContainer}>
+          <AppText style={styles.successText}>{successText}</AppText>
+        </View>
+        <View style={styles.imageContainer}>
+          {photosPreview.front && (
+            <Image
+              //@ts-ignore
+              source={{
+                uri: 'file://' + photosPreview?.front?.path,
+                height: '100%',
+                width: '100%',
+              }}
+            />
+          )}
+        </View>
+      </View>
+
       <View style={styles.headerOverlay}>
         <View style={styles.headerOverlayTop}>
           <View style={styles.headerOverlayTopLeft}>
@@ -85,6 +121,16 @@ const TakeImageScreen = ({
             <AppIcon name="close" size={30} iconColor={COLORS.appWhite} />
           </View>
         </View>
+
+        {/* {photosPreview.front && (
+          <Image
+            source={{
+              uri: 'file://' + photosPreview?.front?.path,
+              width: 200,
+              height: 200,
+            }}
+          />
+        )} */}
 
         <View style={styles.headerOverlayBottom}>
           <View style={styles.headerOverlayBottomLeft}>
@@ -102,8 +148,11 @@ const TakeImageScreen = ({
 
       <View style={styles.footerOverlay}>
         <View style={styles.footerOverlaySide}>
-          <AppIcon name="upload" size={25} iconColor={COLORS.white} />
-          <AppText fontColor="#fbfbfb" fontSize={13}>
+          <AppIcon name="upload" size={30} iconColor={COLORS.white} />
+          <AppText
+            fontColor="#fbfbfb"
+            fontSize={13}
+            style={styles.footerOverlaySideText}>
             Upload
           </AppText>
         </View>
@@ -124,10 +173,13 @@ const TakeImageScreen = ({
                 ? 'ios-flash-off-outline'
                 : 'ios-flash-outline'
             }
-            size={25}
+            size={30}
             color="#fff"
           />
-          <AppText fontColor={COLORS.appWhite} fontSize={13}>
+          <AppText
+            fontColor={COLORS.appWhite}
+            fontSize={13}
+            style={styles.footerOverlaySideText}>
             Flash
           </AppText>
         </TouchableOpacity>

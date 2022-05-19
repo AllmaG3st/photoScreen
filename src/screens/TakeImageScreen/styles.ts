@@ -8,8 +8,10 @@ const windowHeight = Dimensions.get('window').width;
 //TODO: change colors to correct ones and correct proportions
 
 export default StyleSheet.create({
+  //Header+++++
+
   headerOverlay: {
-    backgroundColor: COLORS.primaryDark,
+    backgroundColor: COLORS.secondaryDark,
     justifyContent: 'space-around',
     height: windowHeight / 3,
     left: 0,
@@ -37,15 +39,54 @@ export default StyleSheet.create({
   headerOverlayBottomLeft: {
     flexDirection: 'row',
   },
+
+  //Header========
+
+  //Main++++++
+
+  photosPreview: {
+    backgroundColor: COLORS.secondaryDark,
+    flex: 5,
+    alignItems: 'center',
+    paddingTop: 20,
+  },
+
+  successTextContainer: {
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    height: windowHeight / 6,
+    justifyContent: 'center',
+    marginBottom: 20,
+    width: windowWidth * 0.8,
+  },
+
+  successText: {
+    color: COLORS.primaryBlue,
+    fontWeight: '600',
+  },
+
+  imageContainer: {
+    backgroundColor: 'red',
+    borderRadius: 20,
+    height: windowHeight * 0.8,
+    overflow: 'hidden',
+    width: windowWidth * 0.8,
+  },
+
+  //Main========
+
+  //Footer++++++
+
   footerOverlay: {
     alignItems: 'flex-end',
     backgroundColor: COLORS.primaryDark,
     bottom: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    height: windowHeight / 3,
+    height: windowHeight / 2,
     left: 0,
-    paddingBottom: 15,
+    paddingBottom: 30,
     position: 'absolute',
     zIndex: 99,
     width: windowWidth,
@@ -53,18 +94,24 @@ export default StyleSheet.create({
   footerOverlaySide: {
     height: '60%',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
+  },
+  footerOverlaySideText: {
+    marginTop: 25,
   },
   footerOverlayCenter: {
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   shutter: {
     backgroundColor: COLORS.primaryBlue,
-    borderRadius: windowWidth / 10,
+    borderRadius: windowWidth / 8,
     borderWidth: 10,
     borderColor: '#fff',
-    height: windowWidth / 5,
+    height: windowWidth / 4,
     marginBottom: 10,
-    width: windowWidth / 5,
+    width: windowWidth / 4,
   },
+
+  //Footer========
 });
