@@ -63,6 +63,8 @@ const TakeImageScreen = ({
     setPhotosPreview(null);
   };
 
+  const handleTakeAnotherPicture = () => setPhotosPreview(null);
+
   const takePhoto = useCallback(async () => {
     try {
       if (cameraRef.current == null) throw new Error('Camera Ref is Null');
@@ -127,6 +129,7 @@ const TakeImageScreen = ({
         handleCameraFlesh={handleCameraFlesh}
         photosPreview={photosPreview}
         handleContinueButton={handleContinueButton}
+        handleTakeAnotherPicture={handleTakeAnotherPicture}
       />
     </AppSafeAreaView>
   );

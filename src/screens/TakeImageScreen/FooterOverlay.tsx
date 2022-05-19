@@ -1,16 +1,12 @@
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-} from 'react-native';
+import {View, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {PhotoFile} from 'react-native-vision-camera';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import AppIcon from 'components/AppIcon';
 import AppText from 'components/AppText';
-import Icon from 'react-native-vector-icons/Ionicons';
 import AppButton from 'components/AppButton';
+import AppTouchable from 'components/AppTouchable';
 
 import {CameraFlashType} from '.';
 import {COLORS} from 'constants/colors';
@@ -21,6 +17,7 @@ type FooterOverlayProps = {
   takePhoto: () => void;
   handleCameraFlesh: () => void;
   handleContinueButton: () => void;
+  handleTakeAnotherPicture: () => void;
   photosPreview: PhotoFile | null;
 };
 
@@ -29,6 +26,7 @@ const FooterOverlay = ({
   takePhoto,
   handleCameraFlesh,
   handleContinueButton,
+  handleTakeAnotherPicture,
   photosPreview,
 }: FooterOverlayProps) => {
   return (
@@ -43,9 +41,13 @@ const FooterOverlay = ({
               onPress={handleContinueButton}
             />
           </View>
-          <AppText style={styles.photoPreviewText}>
-            Take another picture
-          </AppText>
+          <AppTouchable onPress={handleTakeAnotherPicture}>
+            <View>
+              <AppText style={styles.photoPreviewText}>
+                Take another picture
+              </AppText>
+            </View>
+          </AppTouchable>
         </View>
       ) : (
         <View style={styles.footerOverlay}>
