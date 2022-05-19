@@ -16,6 +16,8 @@ import {useCamera} from 'hooks/useCamera';
 
 import {COLORS} from 'constants/colors';
 import styles from './styles';
+import HeaderOverlay from './HeaderOverlay';
+import FooterOverlay from './FooterOverlay';
 
 type TakeImageScreenProps = {
   firstPhotoHint: string;
@@ -92,98 +94,36 @@ const TakeImageScreen = ({
         Alert.alert('Application needs access to camera')
       )}
 
-      <View style={styles.photosPreview}>
-        <View style={styles.successTextContainer}>
-          <AppText style={styles.successText}>{successText}</AppText>
-        </View>
-        <View style={styles.imageContainer}>
-          {photosPreview.front && (
-            <Image
-              //@ts-ignore
-              source={{
-                uri: 'file://' + photosPreview?.front?.path,
-                height: '100%',
-                width: '100%',
-              }}
-            />
-          )}
-        </View>
-      </View>
-
-      <View style={styles.headerOverlay}>
-        <View style={styles.headerOverlayTop}>
-          <View style={styles.headerOverlayTopLeft}>
-            <AppText fontColor={COLORS.appWhite} fontSize={15}>
-              {firstPhotoHint}
-            </AppText>
+      {photosPreview.front && (
+        <View style={styles.photosPreview}>
+          <View style={styles.successTextContainer}>
+            <AppText style={styles.successText}>{successText}</AppText>
           </View>
-          <View style={styles.headerOverlayTopRight}>
-            <AppIcon name="close" size={30} iconColor={COLORS.appWhite} />
+          <View style={styles.imageContainer}>
+            {photosPreview.front && (
+              <Image
+                //@ts-ignore
+                source={{
+                  uri: 'file://' + photosPreview?.front?.path,
+                  height: '100%',
+                  width: '100%',
+                }}
+              />
+            )}
           </View>
         </View>
+      )}
 
-        {/* {photosPreview.front && (
-          <Image
-            source={{
-              uri: 'file://' + photosPreview?.front?.path,
-              width: 200,
-              height: 200,
-            }}
-          />
-        )} */}
+      <HeaderOverlay
+        firstPhotoHint={firstPhotoHint}
+        checkIconColor={checkIconColor}
+      />
 
-        <View style={styles.headerOverlayBottom}>
-          <View style={styles.headerOverlayBottomLeft}>
-            <AppText
-              fontColor="#fbfbfb"
-              fontSize={12}
-              style={{marginRight: 20}}>
-              Front
-            </AppText>
-            <AppIcon name="checkcircleo" size={18} iconColor={checkIconColor} />
-          </View>
-          <View></View>
-        </View>
-      </View>
-
-      <View style={styles.footerOverlay}>
-        <View style={styles.footerOverlaySide}>
-          <AppIcon name="upload" size={30} iconColor={COLORS.white} />
-          <AppText
-            fontColor="#fbfbfb"
-            fontSize={13}
-            style={styles.footerOverlaySideText}>
-            Upload
-          </AppText>
-        </View>
-        <View style={styles.footerOverlayCenter}>
-          <TouchableWithoutFeedback onPress={takePhoto}>
-            <View style={styles.shutter} />
-          </TouchableWithoutFeedback>
-          <AppText fontColor={COLORS.appWhite} fontSize={13}>
-            Take a picture
-          </AppText>
-        </View>
-        <TouchableOpacity
-          style={styles.footerOverlaySide}
-          onPress={handleCameraFlesh}>
-          <Icon
-            name={
-              cameraFlash === 'off'
-                ? 'ios-flash-off-outline'
-                : 'ios-flash-outline'
-            }
-            size={30}
-            color="#fff"
-          />
-          <AppText
-            fontColor={COLORS.appWhite}
-            fontSize={13}
-            style={styles.footerOverlaySideText}>
-            Flash
-          </AppText>
-        </TouchableOpacity>
-      </View>
+      <FooterOverlay
+        cameraFlash={cameraFlash}
+        takePhoto={takePhoto}
+        handleCameraFlesh={handleCameraFlesh}
+      />
     </AppSafeAreaView>
   );
 };

@@ -67,7 +67,6 @@ export default StyleSheet.create({
   },
 
   imageContainer: {
-    backgroundColor: 'red',
     borderRadius: 20,
     height: windowHeight * 0.8,
     overflow: 'hidden',
