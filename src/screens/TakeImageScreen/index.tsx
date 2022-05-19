@@ -1,17 +1,9 @@
-import {
-  Alert,
-  Image,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import {Alert, Image, View} from 'react-native';
 import React, {useCallback, useRef, useState} from 'react';
 import {Camera, PhotoFile} from 'react-native-vision-camera';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import AppSafeAreaView from 'components/AppSafeAreaView';
 import AppText from 'components/AppText';
-import AppIcon from 'components/AppIcon';
 import {useCamera} from 'hooks/useCamera';
 
 import {COLORS} from 'constants/colors';
@@ -25,10 +17,7 @@ type TakeImageScreenProps = {
   successText: string;
 };
 
-type PhotosStateType = {
-  front: PhotoFile | null;
-  back: PhotoFile | null;
-};
+export type CameraFlashType = 'off' | 'on' | 'auto' | undefined;
 
 const TakeImageScreen = ({
   firstPhotoHint,
@@ -36,13 +25,8 @@ const TakeImageScreen = ({
   successText,
 }: TakeImageScreenProps) => {
   const [checkIconColor, setCheckIconColor] = useState(COLORS.white);
-  const [photosPreview, setPhotosPreview] = useState<PhotosStateType>({
-    front: null,
-    back: null,
-  });
-  const [cameraFlash, setCameraFlash] = useState<
-    'off' | 'on' | 'auto' | undefined
-  >('off');
+  const [photosPreview, setPhotosPreview] = useState<PhotoFile | null>(null);
+  const [cameraFlash, setCameraFlash] = useState<CameraFlashType>('off');
 
   const cameraRef = useRef<Camera>(null);
 
@@ -64,18 +48,13 @@ const TakeImageScreen = ({
         skipMetadata: true,
         flash: cameraFlash,
       });
-      setPhotosPreview(prevState => {
-        return {
-          ...prevState,
-          front: photo,
-        };
-      });
+      setPhotosPreview(photo);
     } catch (error) {
       console.log(error);
     }
   }, []);
 
-  console.log(photosPreview.front);
+  console.log(photosPreview);
 
   if (device == null)
     return <View style={{flex: 1, backgroundColor: COLORS.black}} />;
@@ -94,17 +73,17 @@ const TakeImageScreen = ({
         Alert.alert('Application needs access to camera')
       )}
 
-      {photosPreview.front && (
+      {photosPreview && (
         <View style={styles.photosPreview}>
           <View style={styles.successTextContainer}>
             <AppText style={styles.successText}>{successText}</AppText>
           </View>
           <View style={styles.imageContainer}>
-            {photosPreview.front && (
+            {photosPreview && (
               <Image
                 //@ts-ignore
                 source={{
-                  uri: 'file://' + photosPreview?.front?.path,
+                  uri: 'file://' + photosPreview.path,
                   height: '100%',
                   width: '100%',
                 }}
@@ -123,6 +102,7 @@ const TakeImageScreen = ({
         cameraFlash={cameraFlash}
         takePhoto={takePhoto}
         handleCameraFlesh={handleCameraFlesh}
+        photosPreview={photosPreview}
       />
     </AppSafeAreaView>
   );

@@ -112,5 +112,25 @@ export default StyleSheet.create({
     width: windowWidth / 4,
   },
 
+  photosPreviewFooter: {
+    alignItems: 'center',
+    backgroundColor: COLORS.primaryDark,
+    bottom: 0,
+    height: windowHeight / 2,
+    justifyContent: 'space-around',
+    left: 0,
+    paddingTop: 20,
+    paddingBottom: 30,
+    position: 'absolute',
+    zIndex: 99,
+    width: windowWidth,
+  },
+
+  photoPreviewButtonContainer: {
+    borderRadius: 40,
+    overflow: 'hidden',
+    width: windowWidth * 0.6,
+  },
+
   //Footer========
 });
