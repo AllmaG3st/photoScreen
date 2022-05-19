@@ -10,16 +10,17 @@ import {PhotoFile} from 'react-native-vision-camera';
 import AppIcon from 'components/AppIcon';
 import AppText from 'components/AppText';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AppButton from 'components/AppButton';
 
+import {CameraFlashType} from '.';
 import {COLORS} from 'constants/colors';
 import styles from './styles';
-import {CameraFlashType} from '.';
-import AppButton from 'components/AppButton';
 
 type FooterOverlayProps = {
   cameraFlash: CameraFlashType;
   takePhoto: () => void;
   handleCameraFlesh: () => void;
+  handleContinueButton: () => void;
   photosPreview: PhotoFile | null;
 };
 
@@ -27,10 +28,9 @@ const FooterOverlay = ({
   cameraFlash,
   takePhoto,
   handleCameraFlesh,
+  handleContinueButton,
   photosPreview,
 }: FooterOverlayProps) => {
-  console.log(photosPreview);
-
   return (
     <>
       {photosPreview ? (
@@ -40,10 +40,12 @@ const FooterOverlay = ({
               title="Continue"
               bgColor={COLORS.primaryBlue}
               paddingVertical={20}
-              onPress={() => console.log('pressed')}
+              onPress={handleContinueButton}
             />
           </View>
-          <AppText>Hello</AppText>
+          <AppText style={styles.photoPreviewText}>
+            Take another picture
+          </AppText>
         </View>
       ) : (
         <View style={styles.footerOverlay}>

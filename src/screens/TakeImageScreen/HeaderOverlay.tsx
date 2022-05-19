@@ -6,15 +6,16 @@ import AppIcon from 'components/AppIcon';
 
 import {COLORS} from 'constants/colors';
 import styles from './styles';
+import {SavedPhotoType} from '.';
 
 type HeaderOverlayProps = {
   firstPhotoHint: string;
-  checkIconColor: string;
+  savedPhotos: SavedPhotoType;
 };
 
 const HeaderOverlay = ({
   firstPhotoHint = '',
-  checkIconColor = '',
+  savedPhotos,
 }: HeaderOverlayProps) => {
   return (
     <View style={styles.headerOverlay}>
@@ -34,9 +35,27 @@ const HeaderOverlay = ({
           <AppText fontColor="#fbfbfb" fontSize={12} style={{marginRight: 20}}>
             Front
           </AppText>
-          <AppIcon name="checkcircleo" size={18} iconColor={checkIconColor} />
+          <AppIcon
+            name="checkcircleo"
+            size={18}
+            iconColor={!savedPhotos.front ? COLORS.white : COLORS.primaryBlue}
+          />
         </View>
-        <View></View>
+        {savedPhotos.front && (
+          <View style={styles.headerOverlayBottomLeft}>
+            <AppText
+              fontColor="#fbfbfb"
+              fontSize={12}
+              style={{marginRight: 20}}>
+              Back
+            </AppText>
+            <AppIcon
+              name="checkcircleo"
+              size={18}
+              iconColor={!savedPhotos.back ? COLORS.white : COLORS.primaryBlue}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

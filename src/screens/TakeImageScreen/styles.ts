@@ -132,5 +132,11 @@ export default StyleSheet.create({
     width: windowWidth * 0.6,
   },
 
+  photoPreviewText: {
+    color: COLORS.white,
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+  },
+
   //Footer========
 });

@@ -17,6 +17,11 @@ type TakeImageScreenProps = {
   successText: string;
 };
 
+export type SavedPhotoType = {
+  front: PhotoFile | null;
+  back: PhotoFile | null;
+};
+
 export type CameraFlashType = 'off' | 'on' | 'auto' | undefined;
 
 const TakeImageScreen = ({
@@ -24,8 +29,11 @@ const TakeImageScreen = ({
   secondPhotoHint,
   successText,
 }: TakeImageScreenProps) => {
-  const [checkIconColor, setCheckIconColor] = useState(COLORS.white);
   const [photosPreview, setPhotosPreview] = useState<PhotoFile | null>(null);
+  const [savedPhotos, setSavedPhotos] = useState<SavedPhotoType>({
+    front: null,
+    back: null,
+  });
   const [cameraFlash, setCameraFlash] = useState<CameraFlashType>('off');
 
   const cameraRef = useRef<Camera>(null);
@@ -37,6 +45,23 @@ const TakeImageScreen = ({
   const handleCameraFlesh = useCallback(() => {
     setCameraFlash(prevState => (prevState === 'off' ? 'on' : 'off'));
   }, []);
+
+  //! Whats wrong here?
+  console.log(cameraFlash);
+
+  const handleContinueButton = () => {
+    if (!savedPhotos.front) {
+      setSavedPhotos(prevState => ({
+        ...prevState,
+        front: photosPreview,
+      }));
+    } else
+      setSavedPhotos(prevState => ({
+        ...prevState,
+        back: photosPreview,
+      }));
+    setPhotosPreview(null);
+  };
 
   const takePhoto = useCallback(async () => {
     try {
@@ -53,8 +78,6 @@ const TakeImageScreen = ({
       console.log(error);
     }
   }, []);
-
-  console.log(photosPreview);
 
   if (device == null)
     return <View style={{flex: 1, backgroundColor: COLORS.black}} />;
@@ -95,7 +118,7 @@ const TakeImageScreen = ({
 
       <HeaderOverlay
         firstPhotoHint={firstPhotoHint}
-        checkIconColor={checkIconColor}
+        savedPhotos={savedPhotos}
       />
 
       <FooterOverlay
@@ -103,6 +126,7 @@ const TakeImageScreen = ({
         takePhoto={takePhoto}
         handleCameraFlesh={handleCameraFlesh}
         photosPreview={photosPreview}
+        handleContinueButton={handleContinueButton}
       />
     </AppSafeAreaView>
   );
